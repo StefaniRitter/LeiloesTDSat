@@ -3,6 +3,7 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.lang.NumberFormatException;
 
 
 public class ProdutosDAO {
@@ -11,7 +12,7 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-    public void cadastrarProduto (ProdutosDTO produto){
+    public boolean cadastrarProduto (ProdutosDTO produto){
         try{
          conectaDAO conexao = new conectaDAO();
             conexao.connectDB();
@@ -31,10 +32,11 @@ public class ProdutosDAO {
 
             // desconectar do banco
             conexao.desconectar();
-        }catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao cadastrar filme. Por favor, confira os dados e tente novamente!", "Erro!", 2, null);
-            
-        }
+            return true;
+        }catch (SQLException | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar. Por favor, insira um valor inteiro!", "Erro!", 2, null);
+            return false;
+             }
         
     }
     
