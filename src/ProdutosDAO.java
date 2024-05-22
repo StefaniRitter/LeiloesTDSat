@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.lang.NumberFormatException;
+import java.util.List;
 
 
 public class ProdutosDAO {
@@ -40,9 +41,38 @@ public class ProdutosDAO {
         
     }
     
-   //public ArrayList<ProdutosDTO> listarProdutos(){
-        
-        //return listagem;
-    //} 
+    public static List<ProdutosDTO> listarProdutos() {
+        //Declaração da lista
+        List<ProdutosDTO> lista = new ArrayList<ProdutosDTO>();
+        try {
+            //conexão com o banco
+            conectaDAO conexao = new conectaDAO();
+            conexao.connectDB();
+
+            //instrução sql que vai ser executada
+            String sql = "select*from produtos;";
+   
+            // usar a string e transformar em sql
+            PreparedStatement prep = conexao.getConexao().prepareStatement(sql);
+            
+            // pegar o retorno do banco com ResultSet e guardar na variavel 
+            ResultSet retorno = prep.executeQuery();
+
+            while (retorno.next()) {
+                ProdutosDTO p = new ProdutosDTO();
+                p.setId(retorno.getInt("id"));
+                p.setNome(retorno.getString("nome"));
+                p.setValor(retorno.getInt("valor"));
+                p.setStatus(retorno.getString("status"));
+
+                lista.add(p);
+            }
+            conexao.desconectar();
+        } catch (SQLException e) {
+            System.out.println("erro ao listar dados do mysql");
+            e.printStackTrace();
+        }
+        return lista;
+    }
 }
 
