@@ -30,8 +30,7 @@ public class conectaDAO {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/uc11?useSSL=false", "root", "stefani123");
-            System.out.println("Conexão realizada com sucesso");
-
+          
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro ConectaDAO" + erro.getMessage());
         } catch (ClassNotFoundException ex) {
@@ -44,7 +43,6 @@ public class conectaDAO {
         try {
             if (conexao != null && !conexao.isClosed()) {
                 conexao.close();
-                System.out.println("desconectado");
             }
         } catch (SQLException ex) {
             System.out.println("erro ao desconectar");

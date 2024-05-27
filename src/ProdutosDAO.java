@@ -52,7 +52,7 @@ public class ProdutosDAO {
             prep = conexao.getConexao().prepareStatement(sql);
             
             //começa do 1 pois a posição 0 é ocupada pelo id que é auto_increment
-            prep.setString(1, "vendido");
+            prep.setString(1, "Vendido");
             prep.setString(2, id);
             
 
