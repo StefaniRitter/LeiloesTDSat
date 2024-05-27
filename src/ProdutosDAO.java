@@ -83,6 +83,43 @@ public class ProdutosDAO {
    
             // usar a string e transformar em sql
             PreparedStatement prep = conexao.getConexao().prepareStatement(sql);
+                        
+            // pegar o retorno do banco com ResultSet e guardar na variavel 
+            ResultSet retorno = prep.executeQuery();
+
+            while (retorno.next()) {
+                ProdutosDTO p = new ProdutosDTO();
+                p.setId(retorno.getInt("id"));
+                p.setNome(retorno.getString("nome"));
+                p.setValor(retorno.getInt("valor"));
+                p.setStatus(retorno.getString("status"));
+
+                lista.add(p);
+            }
+            conexao.desconectar();
+        } catch (SQLException e) {
+            System.out.println("erro ao listar dados do mysql");
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+
+public static List<ProdutosDTO> listarProdutosVendidos() {
+        //Declaração da lista
+        List<ProdutosDTO> lista = new ArrayList<ProdutosDTO>();
+        try {
+            //conexão com o banco
+            conectaDAO conexao = new conectaDAO();
+            conexao.connectDB();
+
+            //instrução sql que vai ser executada
+            String sql = "select*from produtos where status=?;";
+   
+            // usar a string e transformar em sql
+            PreparedStatement prep = conexao.getConexao().prepareStatement(sql);
+            
+            prep.setString(1, "Vendido");
             
             // pegar o retorno do banco com ResultSet e guardar na variavel 
             ResultSet retorno = prep.executeQuery();
@@ -105,3 +142,4 @@ public class ProdutosDAO {
     }
 }
 
+        
