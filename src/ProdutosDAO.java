@@ -41,6 +41,35 @@ public class ProdutosDAO {
         
     }
     
+    public boolean venderProduto (String id){
+        try{
+         conectaDAO conexao = new conectaDAO();
+            conexao.connectDB();
+        //instrução sql que vai ser executada
+            String sql = "update produtos set status=? where id=?;";
+
+            // usar a string e transformar em sql
+            prep = conexao.getConexao().prepareStatement(sql);
+            
+            //começa do 1 pois a posição 0 é ocupada pelo id que é auto_increment
+            prep.setString(1, "vendido");
+            prep.setString(2, id);
+            
+
+            // executar a ação sql
+            prep.execute();
+
+            JOptionPane.showMessageDialog(null, "Venda realizada com sucesso!", "Ok!", 1, null);
+            // desconectar do banco
+            conexao.desconectar();
+            return true;
+        }catch (SQLException | NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao vender. Por favor, insira um id válido!", "Erro!", 2, null);
+            return false;
+             }
+        
+    }
+    
     public static List<ProdutosDTO> listarProdutos() {
         //Declaração da lista
         List<ProdutosDTO> lista = new ArrayList<ProdutosDTO>();
